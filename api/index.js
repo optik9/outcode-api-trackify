@@ -3,7 +3,8 @@ const express = require('express');
 //require('dotenv').config();
 const cors = require('cors');
 
-const timeSheetsRoutes = require('./routes/timeSheets');
+//const timeSheetsRoutes = require('./routes/timeSheets');
+const timeSheetsRoutes = require('../src/routes/timeSheets');
 
 const app = express();
 
