@@ -1,7 +1,12 @@
-const express = require('express');
-const { getTimeSheets } = require('../controllers/timeSheetsController');
-const router = express.Router();
 
-router.get('/timesheets', getTimeSheets);
+
+const express = require('express');
+const router = express.Router();
+const timeSheetsController = require('../controllers/timeSheetsController');
+
+router.get('/timesheets', timeSheetsController.getTimeSheets);
 
 module.exports = router;
+
+
+

@@ -1,5 +1,8 @@
-const getTimesheets = async (startDate, endDate) => {
-    const [rows] = await pool.execute(`
+const db = require('../config/database');
+
+class TimesheetModel {
+  static async  getTimesheets (startDate, endDate) {
+    const query =`
       SELECT 
         users.name AS user_name,
         projects.name AS project_name,
@@ -12,7 +15,17 @@ const getTimesheets = async (startDate, endDate) => {
       JOIN users ON ts.user_id = users.id
       JOIN projects ON ts.project_id = projects.id
       WHERE date(ts.createdAt) BETWEEN ? AND ?
-    `, [startDate, endDate]);
+    `;
     
-    return rows;
-  };
+    try {
+      const [rows] = await db.query(query, [startDate, endDate]); // Extraemos solo las filas
+      return rows;
+    } catch (error) {
+      throw new Error(`Error getting timesheets: ${error.message}`);
+    }
+
+  }
+
+}
+
+module.exports = TimesheetModel;
