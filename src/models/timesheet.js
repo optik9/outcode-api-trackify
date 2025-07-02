@@ -45,7 +45,7 @@ class TimesheetModel {
 
         WHERE 
             
-            date(ts.createdAt) BETWEEN  BETWEEN ? AND ?
+            date(ts.createdAt) BETWEEN ? AND ?
             `;
     try {
       const [rows] = await db.query(query, [startDate, endDate]);
