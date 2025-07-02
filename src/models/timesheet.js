@@ -28,12 +28,12 @@ class TimesheetModel {
             ts.duration,
             ts.createdAt,
             CASE
-                WHEN TRIM(users.phone) REGEXP '^(\\+51|0051)' THEN 'Peru'
-                WHEN TRIM(users.phone) REGEXP '^(\\+59|0059)' THEN 'Peru'
-                WHEN TRIM(users.phone) REGEXP '^(\\+977|00977)' THEN 'Nepal'
-                WHEN TRIM(users.phone) REGEXP '^(\\+1|001)' THEN 'USA'
-                WHEN TRIM(users.phone) REGEXP '^(\\+63|0063)' THEN 'USA'
-                ELSE 'Other'
+                  WHEN TRIM(users.phone) REGEXP '^(\\\\+51|0051)' THEN 'Peru'
+                  WHEN TRIM(users.phone) REGEXP '^(\\\\+59|0059)' THEN 'Peru'
+                  WHEN TRIM(users.phone) REGEXP '^(\\\\+977|00977)' THEN 'Nepal'
+                  WHEN TRIM(users.phone) REGEXP '^(\\\\+1|001)' THEN 'USA'
+                  WHEN TRIM(users.phone) REGEXP '^(\\\\+63|0063)' THEN 'USA'
+                  ELSE 'Other'
             END AS location
             
         FROM 
