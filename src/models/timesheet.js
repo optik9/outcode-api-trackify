@@ -2,7 +2,7 @@ const db = require('../config/database');
 const moment = require('moment-timezone');
 
 class TimesheetModel {
-  static async getTimesheets(startDate, endDate) {
+  static async getTimesheets(startDate, endDate, location = null) {
    /* const query = `
       SELECT 
         users.name AS user_name,
@@ -18,7 +18,7 @@ class TimesheetModel {
       WHERE date(ts.createdAt) BETWEEN ? AND ?
     `; */
 
-     const query = `
+     let query = `
             SELECT 
             users.name AS user_name, 
             projects.name AS project_name, 
@@ -44,11 +44,26 @@ class TimesheetModel {
             projects ON ts.project_id = projects.id
 
         WHERE 
-            
             date(ts.createdAt) BETWEEN ? AND ?
             `;
+
+    // Agregar filtro por location si se proporciona
+    if (location) {
+      query += ` AND (
+        CASE
+          WHEN TRIM(users.phone) REGEXP '^(\\\\+51|0051)' THEN 'Peru'
+          WHEN TRIM(users.phone) REGEXP '^(\\\\+59|0059)' THEN 'Peru'
+          WHEN TRIM(users.phone) REGEXP '^(\\\\+977|00977)' THEN 'Nepal'
+          WHEN TRIM(users.phone) REGEXP '^(\\\\+1|001)' THEN 'USA'
+          WHEN TRIM(users.phone) REGEXP '^(\\\\+63|0063)' THEN 'USA'
+          ELSE 'Other'
+        END
+      ) = ?`;
+    }
+
     try {
-      const [rows] = await db.query(query, [startDate, endDate]);
+      const params = location ? [startDate, endDate, location] : [startDate, endDate];
+      const [rows] = await db.query(query, params);
 
       // Formateamos los valores sin cambiar la zona horaria
       const timesheets = rows.map(row => ({

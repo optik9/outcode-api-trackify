@@ -3,7 +3,7 @@ const TimesheetModel = require('../models/timesheet');
 class timeSheetsController {
   static async getTimeSheets(req, res) {
     try {
-      const { startDate, endDate } = req.query;
+      const { startDate, endDate, location } = req.query;
 
       if (!startDate || !endDate) {
         return res.status(400).json({
@@ -12,14 +12,14 @@ class timeSheetsController {
         });
       }
 
-      console.log(`Fetching timesheets between ${startDate} and ${endDate}`);
+      console.log(`Fetching timesheets between ${startDate} and ${endDate}${location ? ` for location: ${location}` : ''}`);
 
-      const timesheets = await TimesheetModel.getTimesheets(startDate, endDate);
+      const timesheets = await TimesheetModel.getTimesheets(startDate, endDate, location);
 
       if (!timesheets || timesheets.length === 0) {
         return res.json({
           success: true,
-          message: 'No timesheets found for the given dates.',
+          message: 'No timesheets found for the given criteria.',
           data: [],
         });
       }
