@@ -63,6 +63,8 @@ class TimesheetModel {
 
     try {
       const params = location ? [startDate, endDate, location] : [startDate, endDate];
+      console.log('Query:', query);
+      console.log('Params:', params);
       const [rows] = await db.query(query, params);
 
       // Formateamos los valores sin cambiar la zona horaria

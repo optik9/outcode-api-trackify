@@ -3,7 +3,9 @@ const TimesheetModel = require('../models/timesheet');
 class timeSheetsController {
   static async getTimeSheets(req, res) {
     try {
-      const { startDate, endDate, location } = req.query;
+      const { startDate, endDate } = req.query;
+      // Extraer location de forma case-insensitive
+      const location = req.query.location || req.query.Location || req.query.LOCATION;
 
       if (!startDate || !endDate) {
         return res.status(400).json({
